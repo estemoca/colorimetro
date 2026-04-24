@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorímetro de Mango - Detección IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍃 Colorímetro de Mango</h1>
+            <p class="subtitle">Análisis de Maduración con Inteligencia Artificial</p>
+        </header>
+
+        <div class="grid-2x2">
+            <div class="cell camera-cell">
+                <h3>📷 Cámara en Vivo</h3>
+                <div class="video-wrapper">
+                    <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Video">
+                    <canvas id="overlay-canvas"></canvas>
+                </div>
+                <div class="detection-box" id="detection-box">
+                    <span id="detection-label">Buscando fruta...</span>
+                </div>
+            </div>
+
+            <div class="cell sample-cell">
+                <h3>🔍 Muestra Detectada</h3>
+                <canvas id="cropped-canvas" width="320" height="240"></canvas>
+                <div id="sample-info">
+                    <p>Área detectada: <span id="detection-area">--</span></p>
+                    <p>Confianza IA: <span id="confidence">--</span></p>
+                </div>
+            </div>
+
+            <div class="cell results-cell">
+                <h3>📊 Resultados</h3>
+                <div id="results">
+                    <div class="result-item">
+                        <span class="label">Estado:</span>
+                        <span class="value" id="madurez-value">Esperando análisis...</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Color RGB:</span>
+                        <span class="value" id="rgb-value">R:-- G:-- B:--</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Grados Brix:</span>
+                        <span class="value" id="brix-value">-- °Bx</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="label">Acidez:</span>
+                        <span class="value" id="acidez-value">-- %</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cell graph-cell">
+                <h3>📈 Firma Espectral</h3>
+                <div id="plot-container"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="analyze-btn" class="btn-primary">
+                🔬 ANALIZAR FRUTA
+            </button>
+            <div class="progress-bar">
+                <div id="progress-fill"></div>
+                <span id="progress-text">0%</span>
+            </div>
+        </div>
+
+        <div class="mode-indicator">
+            <span id="mode-status">Modo: --</span>
+            <span id="detection-mode">Detección: --</span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>
